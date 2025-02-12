@@ -32,11 +32,14 @@ Git makes collaborating in a team easier and more streamlined by enabling branch
 To contribute to the Decepticons Project, you'll need to use Git. Here are some basic commands to get you started:
 
 1. **Clone the Repository**:
+ - Open a terminal or vs code in your working directory and run the following code to clone the folder
    ```bash
    git clone https://github.com/cheuh008/UR5_Decepticons
-    ```
+   ```
 
-2. **Use a Branch to keep your work safe**
+2. *Checkout or Create a Branch**
+- This helps isolate your work and changes made to your files that you want to work on
+- So that everyone can work on their own stuff whenever they want to
    ```bash
    git checkout Megatron
    ```
@@ -51,21 +54,53 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
    ```
    or make your own branch:
    ```bash
-      git checkout -b [branch-name]
+   git checkout -b [branch-name]
    ```
 
-3. **Make Changes and Commit:**
+3. **Pull the latest update from main**
+ - to make sure that your brnach is up to date with any changes to main before and after you work
+   ```bash
+   git pull
+   ```
+
+4. **Make Changes and Commit:**
+ - Now any work that you've done you can either add them all or just the files you worked on
+ -  
    ```bash
    git add . 
    git commit -m "[message]"
-    ```
+   ```
    A descriptive message of the changes you've made is encouraged
-   . adds all files, but files can be individually specified
+   . adds all files, but files can be individually specified as just filename or/directory/filename.file
+   keep in mind that more things tyou add, the more likely there will be "conflict" with other updates
    
-4. Push Your Changes:
+5. Push Your Changes to your branch:
    ```bash
    git push origin [your-branch-name]
-    ```
+   ```
+   
+6. **Pull again! --rebase**
+- After committing and saving your work, and *definitely* before *Merging*
+- Pull from main again to make sure that all the changes and updates are synced up and any conflicts are resolved,
+   - ie either merging with the updated content or debugging to make sure updates are compatible
+    ```bash
+   git pull --rebase
+   ```
+*  - --rebase is used to avoid unnecessary merge commits and from the main brnach and reapplying your commits over the top
+   - conflicts will arise from updated files and vs code is usually pretty good about merging conflicts but its a good idea to double check.
+   - once resolved you can stage the resolved changes via
+   ```bash
+   git add <conflict-file> or . 
+   ```
+   and then
+   ```bash
+   git rebase --continue
+   ``` 
+7.  **Finally, Once *tested*, it can merge with the main Branch**
+   ```bash
+   git merge main
+   ```
+
 ---
 
 Python with Conda
