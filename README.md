@@ -39,11 +39,14 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
 2. **Use a Branch to keep your work safe**
    ```bash
    git checkout Megatron
-
+   ```
+   ```bash
    git checkout Soundwave
-
+   ```
+   ```bash
    git checkout Starscream
-
+   ```
+   ```bash
    git checkout Skywarp
    ```
    or make your own branch:
@@ -51,14 +54,13 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
       git checkout -b [branch-name]
    ```
 
-
 3. **Make Changes and Commit:**
    ```bash
    git add . 
    git commit -m "[message]"
     ```
    A descriptive message of the changes you've made is encouraged
-   . adds all files but files can be indicidually specified
+   . adds all files, but files can be individually specified
    
 4. Push Your Changes:
    ```bash
@@ -67,9 +69,9 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
 ---
 
 Python with Conda
-- Following on from Joe's project, we are using conda again to manage Python packages (modules you import) More info [here](https://docs.anaconda.com/).
-- Anaconda (conda) is an open-source environment management system (that makes sure that Python is uniquely the same across projects and that there are no incompatibilities.)
-- VS Code automatically prompts you to use a virtual environment when working with Python files. If setup, this "venv" can be [selected](https://code.visualstudio.com/docs/python/environments):
+- Following on from Joe's project, we are using conda again to manage Python packages (modules you import). More info [here](https://docs.anaconda.com/).
+- Anaconda (conda) is an open-source environment management system (that ensures that Python is uniquely the same across projects and has no incompatibilities.)
+- VS Code automatically prompts you to use a virtual environment for Python files. If set, this "venv" can be [selected](https://code.visualstudio.com/docs/python/environments):
 
 1. Create a Conda Environment:
 ```bash
@@ -87,5 +89,5 @@ This project is licensed under the GNU General Public License (GPL). See the LIC
 ---
 
 ***Contact and support***
-Harry **Shockwave** has nothing better to do andis always at your service at h.cheung10@liv.ac.uk
+Harry **Shockwave** has nothing better to do and is always at your service at h.cheung10@liv.ac.uk.
 
