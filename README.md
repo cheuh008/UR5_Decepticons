@@ -37,22 +37,19 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
     ```
 
 2. **Use a Branch to keep your work safe**
-```bash
+   ```bash
    git checkout Megatron
-```
-```bash
+
    git checkout Soundwave
-```
-```bash
+
    git checkout Starscream
-```
-```bash
+
    git checkout Skywarp
-```
-or make your own branch:
-```bash
-   git checkout -b [branch-name]
-```
+   ```
+   or make your own branch:
+   ```bash
+      git checkout -b [branch-name]
+   ```
 
 
 3. **Make Changes and Commit:**
