@@ -100,7 +100,10 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
    ```bash
    git merge main
    ```
-
+for a list of all git commands do git help or: 
+```bash
+ git help -a
+```
 ---
 
 Python with Conda
