@@ -1,21 +1,20 @@
-# Decepticons Project: GNU Edition
+# Decepticons Project: Transforming Chemistry with AI-Drive Robotics
 
----
-### **Team Lead:** Megan **Megatron** O'Neil
+### **Team Lead:** Megan **_Megatron_** O'Neil
 ####  Full-Stack Developer and Project Manager
 ---
 ## Team Memebrs:
 #### Cheif Data Scientist and Systems Engineer  
- - Harry **Shockwave** Cheung
-
+ - Harry **_Shockwave_** Cheung
 #### Cheif Frontend Developer and Creatives Director.
- - Justin **Starscream**
-
+ - Justin * **_Starscream_**
 #### Cheif Automation Engineer and Data Collector 
-- Marion **Skywarp** Reidgway
-
+- Marion * **_Skywarp_** Reidgway
 ---
+## Project Overview
 
+UR5 Robot... 
+---
 ## Table of Contents
 1. [Project Overview](#project-overview)
 2. [Getting Started](#getting-started)
@@ -24,28 +23,26 @@
 3. [License](#license)
 
 ---
-
-## Project Overview
-
----
-
 ## Getting Started
 
 Git makes collaborating in a team easier and more streamlined by enabling branches which isolate individual changes and makes it more developmentally stable to merge with the main branch with pull requests once the code is tested and stable
 
+---
 ### Git Basics
-
 To contribute to the Decepticons Project, you'll need to use Git. Here are some basic commands to get you started:
-
 1. **Clone the Repository**:
+
  - Open a terminal or vs code in your working directory and run the following code to clone the folder
+   
    ```bash
    git clone https://github.com/cheuh008/UR5_Decepticons
    ```
+   
+2. **Checkout or Create a Branch**
 
-2. *Checkout or Create a Branch**
 - This helps isolate your work and changes made to your files that you want to work on
 - So that everyone can work on their own stuff whenever they want to
+  
    ```bash
    git checkout Megatron
    ```
@@ -62,16 +59,18 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
    ```bash
    git checkout -b [branch-name]
    ```
-
 3. **Pull the latest update from main**
+
  - to make sure that your brnach is up to date with any changes to main before and after you work
+   
    ```bash
    git pull
    ```
-
+   
 4. **Make Changes and Commit:**
+
  - Now any work that you've done you can either add them all or just the files you worked on
- -  
+
    ```bash
    git add . 
    git commit -m "[message]"
@@ -84,7 +83,6 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
    ```bash
    git push origin [your-branch-name]
    ```
-   
 6. **Pull again! --rebase**
 - After committing and saving your work, and *definitely* before *Merging*
 - Pull from main again to make sure that all the changes and updates are synced up and any conflicts are resolved,
@@ -103,13 +101,14 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
    git rebase --continue
    ``` 
 7.  **Finally, Once *tested*, it can merge with the main Branch**
-   ```bash
-   git merge main
-   ```
-for a list of all git commands do git help or: 
-```bash
- git help -a
-```
+    ```bash
+    git merge main
+    ```
+
+ for a list of all git commands do git help or: 
+ ```bash
+  git help -a
+ ```
 ---
 
 Python with Conda
