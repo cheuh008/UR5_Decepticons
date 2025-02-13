@@ -1,12 +1,19 @@
 # Decepticons Project: GNU Edition
 
-Team Memebrs:
+## Team Memebrs:
 
-Megan **Megatron** O'neil
-Harry **Shockwave** Cheung
-Justin **Starscream** 
-Marion **Skywarp** Reidgway
+### **Team Lead:**
+####  Full-Stack Developer and Project Manager
+ - Megan **Megatron** O'Neil
 
+#### Cheif Data Scientist and Systems Engineer  
+ - Harry **Shockwave** Cheung
+
+#### Cheif Frontend Developer and Creatives Director.
+ - Justin **Starscream**
+
+#### Cheif Automation Engineer and Data Collector 
+- Marion **Skywarp** Reidgway
 
 ---
 
