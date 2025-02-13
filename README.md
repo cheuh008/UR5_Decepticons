@@ -1,11 +1,10 @@
 # Decepticons Project: GNU Edition
 
-## Team Memebrs:
-
-### **Team Lead:**
+---
+### **Team Lead:** Megan **Megatron** O'Neil
 ####  Full-Stack Developer and Project Manager
- - Megan **Megatron** O'Neil
-
+---
+## Team Memebrs:
 #### Cheif Data Scientist and Systems Engineer  
  - Harry **Shockwave** Cheung
 
@@ -135,4 +134,6 @@ This project is licensed under the GNU General Public License (GPL). See the LIC
 
 ***Contact and support***
 Harry **Shockwave** has nothing better to do and is always at your service at h.cheung10@liv.ac.uk.
+
+For complaint please seek Megan.oneil@totoallyRealemailaddress.biz
 
