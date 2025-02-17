@@ -7,9 +7,9 @@
 #### Cheif Data Scientist and Systems Engineer  
  - Harry **_Shockwave_** Cheung
 #### Cheif Frontend Developer and Creatives Director.
- - Justin * **_Starscream_**
+ - Justin **_Starscream_**
 #### Cheif Automation Engineer and Data Collector 
-- Marion * **_Skywarp_** Reidgway
+- Marion **_Skywarp_** Reidgway
 ---
 ## Project Overview
 
