@@ -126,6 +126,11 @@ conda activate [env-name]
 pip install -r requirements.txt
 ```
 
+## Further Reading into Vision Language Models
+
+- [Vision Language Models Explaine}([https://huggingface.co/blog/vlms)
+
+
 ---
 License
 This project is licensed under the GNU General Public License (GPL). See the LICENSE file for details.
