@@ -64,7 +64,7 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
  - to make sure that your brnach is up to date with any changes to main before and after you work
    
    ```bash
-   git pull
+   git pull origin main
    ```
    
 4. **Make Changes and Commit:**
