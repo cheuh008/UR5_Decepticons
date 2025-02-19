@@ -16,39 +16,53 @@ from robotiq.robotiq_gripper import RobotiqGripper
 HOST = "192.168.0.2"
 PORT = 30003
 
-
 def main():
     robot = URControl(ip="192.168.0.2", port=30003)
     gripper=RobotiqGripper()
     gripper.connect("192.168.0.2", 63352)
+
+    new_home = [1.0294861793518066, -1.4273227763227005, 1.4040244261371058, -1.551843050201871, -1.5698121229754847, 0.00013137006317265332]
+    vial_pickup = [1.0490845441818237, -1.2347015899470826, 1.8862054983722132, -2.2256490192809046, -1.5525544325457972, 1.0632829666137695]
+    vial_plate_intermediate = [1.1170587539672852, -1.4987735611251374, 1.561568562184469, -1.6459490261473597, -1.552575413380758, 1.0632418394088745]
+    plate_pickup = []
+    plate_wait = []
+    plate_end_intermediate = []
+    end_dropoff = []
+
+    def goto(pos):
+        robot.move_joint_list(pos, 0.7, 0.5, 0.02)
+
+    def open_gripper():
+        gripper.move(0,125,125) # Open Gripper
+
+    def close_gripper():
+        gripper.move(255,125,125) # Close Gripper
+     
+    goto(new_home)
+    open_gripper()
+
+    goto(vial_pickup)
+    close_gripper()
+
+    goto(vial_plate_intermediate)
+
+    goto(plate_pickup)
+    open_gripper()
+
+    goto(plate_wait)
+    goto(plate_pickup)
+    close_gripper()
+    goto(plate_wait)
+
+    goto(plate_end_intermediate)
+    goto(end_dropoff)
+    open_gripper()
 
     # #robot.go_home()
     # # Home
     # joint_state=degreestorad([93.77,-89.07,89.97,-90.01,-90.04,0.0])
     # robot.move_joint_list(joint_state, 0.5, 0.5, 0.02)
 
-    joint_state= [1.0294861793518066, -1.4273227763227005, 1.4040244261371058, -1.551843050201871, -1.5698121229754847, 0.00013137006317265332]
-    robot.move_joint_list(joint_state, 0.5, 0.5, 0.02)
-    gripper.move(0,125,125)     # Open Gripper
-    
-    # Position A: Above Vial Start
-    joint_state = [1.0490845441818237, -1.2347015899470826, 1.8862054983722132, -2.2256490192809046, -1.5525544325457972, 1.0632829666137695]
-    robot.move_joint_list(joint_state, 0.5, 0.5, 0.02)
-    gripper.move(255,125,125)     # Close Gripper
-
-    joint_state = [1.1170587539672852, -1.4987735611251374, 1.561568562184469, -1.6459490261473597, -1.552575413380758, 1.0632418394088745]
-    robot.move_joint_list(joint_state, 0.5, 0.5, 0.02)
-
-    # # Position C: Above Vial End - 
-    # joint_state = [1.5515978336334229, -1.6546455822386683, 2.3073864618884485, -2.1558286152281703, -1.560286823903219, 1.2228846549987793]
-    # robot.move_joint_list(joint_state, 0.5, 0.5, 0.02)
-    
-
-    # joint_state = [1.5160772800445557, -1.592754980126852, 2.3201831022845667, -2.270933767358297, -1.5024340788470667, 1.221303939819336]
-    # robot.move_joint_list(joint_state, 0.5, 0.5, 0.02)
-    # #FOR ROS  
-    # joint_state = [0.0,-1.57,0.0,-1.57,0.0,0.0]
-    # #robot.move_joint_list(joint_state, 0.5, 0.5, 0.02)
 
 def degreestorad(list):
      for i in range(6):
