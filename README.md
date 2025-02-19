@@ -5,7 +5,7 @@
 ---
 ## Team Memebrs:
 #### Cheif Data Scientist and Systems Engineer  
- - Harry **_Shockwave_** Cheung
+ - Harry **_Soundwave_** Cheung
 #### Cheif Frontend Developer and Creatives Director.
  - Justin **_Starscream_**
 #### Cheif Automation Engineer and Data Collector 
