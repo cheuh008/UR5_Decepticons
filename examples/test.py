@@ -18,6 +18,34 @@ from robotiq.robotiq_gripper import RobotiqGripper
 HOST = "192.168.0.2"
 PORT = 30003
 
+async def open_camera():
+    cam = cv2.VideoCapture(0)
+    cv2.namedWindow("test")
+    img_counter = 0
+    while True:
+        ret, frame = cam.read()
+        if not ret:
+            print("failed to grab frame")
+            break
+        cv2.imshow("test", frame)
+    
+        k = cv2.waitKey(1)
+        if k % 256 == 27:
+            # ESC pressed
+            print("Escape hit, closing...")
+            break
+
+        elif k % 256 == 32:
+            # SPACE pressed
+            img_name = "opencv_frame_{}.png".format(img_counter)
+            cv2.imwrite(img_name, frame)
+            print("{} written!".format(img_name))
+            img_counter += 1
+    cam.release()
+    cv2.destroyAllWindows()
+camera_thread = threading.Thread(target=asyncio.run, args=(open_camera(),))
+camera_thread.start()
+
 async def main():
     robot = URControl(ip="192.168.0.2", port=30003)
     gripper = RobotiqGripper()
@@ -36,49 +64,24 @@ async def main():
     stirer_intermediate = [1.3536285161972046, -1.5596089049107213, 1.9042213598834437, -1.9661885700621546, -1.5563834349261683, -0.28846770921816045]
     stirrer_position = [1.3533833026885986, -1.4901131105474015, 1.9040244261371058, -1.9773227177061976, -1.5557358900653284, -0.28849822679628545]
     camera_position = [1.5405631065368652, -1.9327041111388148, 2.2914238611804407, -1.9269162617125453, -1.5510247389422815, -0.29272157350649053]
-    end_plate_intermediate_0 = [1.6737067699432373, -1.2211823028377076, 1.260329548512594, -1.6527935467162074, -1.56138784090151, -0.2863681952105921]
+    end_plate_intermediate_0 = [1.6700143814086914, -1.1888567966273804, 1.689509693776266, -2.0677505932249964, -1.5356534163104456, -0.2683914343463343]
+    # end_plate_intermediate_0 = [1.650180459022522, -1.11443583786998, 1.666863743458883, -2.122789045373434, -1.4902318159686487, -0.27125436464418584] # 2
+    # end_plate_intermediate_0 = [1.6799054145812988, -1.0675780934146424, 1.5524652639972132, -2.053753515283102, -1.5616729895221155, -0.2901495138751429] # 3
+    # end_plate_intermediate_0 = [1.668087124824524, -1.0212004345706482, 1.4788315931903284, -2.0429655514159144, -1.541999642048971, -0.29016143480409795] # 4
     end_plate_0 = [1.6830980777740479, -1.1380524200252076, 1.7275798956500452, -2.1436130009093226, -1.5491254965411585, 1.0660600662231445]
-    # [1.6921695470809937, -1.09274776399646, 1.6587136427508753, -2.1459037266173304, -1.5800240675555628, 3.6227357387542725] # End_2
-    # [1.6935619115829468, -1.0261858862689515, 1.5369141737567347, -2.0552860699095667, -1.5954092184649866, 4.359703063964844] # End_3
+    # end_plate_0 = [1.6921695470809937, -1.09274776399646, 1.6587136427508753, -2.1459037266173304, -1.5800240675555628, 3.6227357387542725] # End_2
+    # end_plate_0 = [1.6935619115829468, -1.0261858862689515, 1.5369141737567347, -2.0552860699095667, -1.5954092184649866, 4.359703063964844] # End_3
     # end_plate_0 =  [1.6784923076629639, -0.9912229341319581, 1.4889605681048792, -2.076402326623434, -1.5669849554644983, 4.669535160064697] # End_4
 
     def goto(pos):
         robot.move_joint_list(pos, 0.7, 0.5, 0.05)
-
     def open_gripper():
         gripper.move(0, 125, 125)  # Open Gripper
 
     def close_gripper():
-        gripper.move(255, 125, 125)  # Close Gripper
+        gripper.move(200, 125, 125)  # Close Gripper
 
-    async def open_camera():
-        cam = cv2.VideoCapture(0)
-        cv2.namedWindow("test")
-        img_counter = 0
-        while True:
-            ret, frame = cam.read()
-            if not ret:
-                print("failed to grab frame")
-                break
-            cv2.imshow("test", frame)
-        
-            k = cv2.waitKey(1)
-            if k % 256 == 27:
-                # ESC pressed
-                print("Escape hit, closing...")
-                break
-
-            elif k % 256 == 32:
-                # SPACE pressed
-                img_name = "opencv_frame_{}.png".format(img_counter)
-                cv2.imwrite(img_name, frame)
-                print("{} written!".format(img_name))
-                img_counter += 1
-        cam.release()
-        cv2.destroyAllWindows()
-    camera_thread = threading.Thread(target=asyncio.run, args=(open_camera(),))
-    camera_thread.start()
-
+ 
     goto(new_home)
     open_gripper()
 
