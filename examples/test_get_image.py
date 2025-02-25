@@ -1,9 +1,7 @@
 import cv2
 
 cam = cv2.VideoCapture(0)
-
 cv2.namedWindow("test")
-
 img_counter = 0
 
 while True:
@@ -27,5 +25,4 @@ while True:
         img_counter +=1
     
 cam.release
-
 cv2.destroyAllWindows()
