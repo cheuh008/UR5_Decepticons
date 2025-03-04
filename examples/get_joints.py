@@ -3,6 +3,7 @@ import os
 import time
 import argparse
 import math 
+
 # Add the directory containing robotiq_preamble.py to the Python search path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(current_dir, 'robotiq'))
