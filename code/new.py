@@ -4,7 +4,7 @@ import numpy as np
 
 # Add the directory containing rexiq_preamble.py to the Python search path
 current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(current_dir, 'rexiq'))
+sys.path.append(os.path.join(current_dir, 'robotiq'))
 
 from utils.UR_Functions import URfunctions as URControl
 from robotiq.robotiq_gripper import RobotiqGripper
@@ -14,13 +14,10 @@ iterations = 4
 with open("positions.json", "r") as json_file:
     POSITIONS = json.load(json_file)
 
-# Color detection parameters
-UPPER_BLUE = np.array([140, 255, 255])  
-LOWER_BLUE = np.array([100, 50, 50])  
-
 HOST = "192.168.0.2"
 PORT = 30003
 MAX_ROUNDS = 2
+SLEEP_TIME = 2
 
 rex = URControl(ip=HOST, port=PORT)
 gripper = RobotiqGripper()
@@ -38,14 +35,14 @@ def ungrab():
     """Opens the gripper """
     gripper.move(0, 125, 125)
 
-async def check():
+def check():
     # Loop?
     move_to(POSITIONS['stir_interm'])
     move_to(POSITIONS['stirer'])
     ungrab()
 
     move_to(POSITIONS['home'])
-    await asyncio.sleep(5)
+    asyncio.sleep(SLEEP_TIME)
 
     move_to(POSITIONS['stirer'])
     grab()
@@ -56,24 +53,25 @@ async def check():
 
     return False
 
-async def workflow(i):
+def workflow(i):
 
     # Start
     ungrab()
     move_to(POSITIONS['home'])
-    move_to(POSITIONS['pickup'][i])
+    move_to((POSITIONS['pickup'])[i])
     grab()
 
-    move_to(POSITIONS['VP_interm'][i])
+    move_to(POSITIONS['VP_interm'])
     move_to(POSITIONS['home'])
 
     rounds = 0
     colour_change = False 
-    colour_change = await check()
+    colour_change = check()
     
-    while not colour_change or rounds < MAX_ROUNDS:
-        await check()
-        await asyncio.sleep(5)
+    while not colour_change and rounds < MAX_ROUNDS:
+        asyncio.run(check())
+        rounds += 1
+        asyncio.sleep(SLEEP_TIME)
         if colour_change:
             print("Yay")
         else:
@@ -88,14 +86,12 @@ async def workflow(i):
     print("Workflow End")
 
 
-
-async def main():
+def main():
     """Main execution function."""
-    threading.Thread(target=asyncio.run, args=(open(),)).start()
 
     for i in range(iterations):
         print(f"Processing iteraation {i}")
-        await workflow(i)
+        workflow(i)
 
     print("All vials processed. Exiting program.")
 

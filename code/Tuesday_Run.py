@@ -146,21 +146,21 @@ async def main():
     close_gripper()
     goto(new_home)
 
-    goto(camera_position)
+    #goto(camera_position)
     # Run camera in a separate thread
 
-    await asyncio.sleep(5)
+    #await asyncio.sleep(5)
     # add an if or else statement depending on camera run to go to end or stirrer
     # also add if stirred 3 times then go to failed section
 
     # Capture cropped image and save RGB values
-    process_image()
+    #process_image()
 
-    goto(new_home)
-    goto(end_plate_intermediate_0)
-    goto(end_plate_0)
-    open_gripper()
-    goto(new_home)
+    #goto(new_home)
+    #goto(end_plate_intermediate_0)
+    #goto(end_plate_0)
+    #open_gripper()
+    #goto(new_home)
 
 def degreestorad(list):
     for i in range(6):
