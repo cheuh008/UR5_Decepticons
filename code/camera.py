@@ -1,79 +1,109 @@
-import cv2, warnings, time, threading, os
+# =============================================================================
+# region Import
+# =============================================================================
+
+import cv2
+import os
 import numpy as np
 import pandas as pd
+from typing import Optional, Tuple
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
+# =============================================================================
+# region Capture Image
+# =============================================================================
 
-def capture_image():
-    """Captures an image from the camera, crops it, and saves it to the 'data/images' directory"""
+def capture_image(current_dir: str) -> Optional[Tuple[str, np.ndarray]]:
+    """
+    Captures, crops, and saves an image from the webcam.
+        Args: current_dir (str)
+        Returns: Tuple[str, np.ndarray] or None if an error occurs.
+    """
     save_path = os.path.join(current_dir, 'data', 'images')
     os.makedirs(save_path, exist_ok=True)
     
     try:
-        # Determine the next available file name
-        existing_files = [f for f in os.listdir(save_path) if f.startswith("img_") and f.endswith(".jpg")]
-        next_number = max([int(f.split("_")[-1].split(".")[0]) for f in existing_files], default=-1) + 1
-        img_name = os.path.join(save_path, f"img_{next_number}.jpg")
-        
+        # Try to open camera and read frame
         cam = cv2.VideoCapture(0)
-        if not cam.isOpened():
-            print("Error: Could not open camera.")
-            return None, None
+        if not cam.isOpened(): 
+            raise RuntimeError("Could not open camera.")
         
         ret, frame = cam.read()
+        if not ret or frame is None: 
+            raise ValueError("Failed to capture image.")
+    
+        # Cropping image to vial area
+        h, w, _ = frame.shape
+        crop_width, crop_height = w // 4, h // 4
+        start_x, start_y = (w // 2) + (w // 8) - (crop_width // 2), h // 8
+        cropped_image = frame[start_y:start_y + crop_height, start_x:start_x + crop_width]
+
+        if cropped_image.size == 0: 
+            raise ValueError("Cropping failed.")
+    
+        # Determine next available file name
+        existing_files = [f for f in os.listdir(save_path) if f.startswith("img_") and f.endswith(".jpg")]
+        next_number = max((int(f.split("_")[-1].split(".")[0]) for f in existing_files), default=-1) + 1
+        image_path = os.path.join(save_path, f"img_{next_number}.jpg")
+
+        # Save cropped image
+        cv2.imwrite(image_path, cropped_image)
+        print(f"Saved: {image_path}")
+        return image_path, cropped_image
+
+    except Exception as e:
+        print(f"Error capturing image: {e}")
+        return None
+
+    finally:
         cam.release()
         cv2.destroyAllWindows()
-        
-        if not ret or frame is None:
-            print("Error: Failed to capture image.")
-            return None, None
-        
-        # Get image dimensions to crop 
-        h, w, _ = frame.shape        
-        crop_width, crop_height = w // 4, h // 4 
-        start_x = (w // 2) + (w // 8) - (crop_width // 2) 
-        start_y = h // 8  
-        
-        cropped_frame = frame[start_y:start_y + crop_height, start_x:start_x + crop_width]
-        
-        if cropped_frame is None or cropped_frame.size == 0:
-            print("Error: Cropping failed, resulting in an empty image.")
-            return None, None
-        
-        cv2.imwrite(img_name, cropped_frame)
-        print(f"Cropped image saved at {img_name}")
-        
-        return img_name, cropped_frame
-    except Exception as e:
-        print(f"Unexpected error in capture_image(): {e}")
-        return None, None
 
-def extract_rgb(image_path, image):
-    if image is None:
-        print("Error: No image to extract RGB from.")
-        return
-    
+
+# =============================================================================
+# region Extract RGB
+# =============================================================================
+
+def extract_rgb(current_dir: str, image_path: str, image: np.ndarray) -> None:
+    """
+    Extracts and saves RGB values from the image.
+        Args: current_dir (str), image_path (str), image (np.ndarray): The image array.
+    """
+
     try:
+        # Convert image to RGB and compute average color
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        avg_color = np.mean(image_rgb, axis=(0, 1))  # Compute mean RGB
-        r, g, b = int(avg_color[0]), int(avg_color[1]), int(avg_color[2])
+        avg_color = np.mean(image_rgb, axis=(0, 1))  
+        r, g, b = map(int, avg_color)
+        csv_path = os.path.join(current_dir, 'data', 'RGB_values.csv')      
+
+        # Save RGB values to CSV file
         sample_id = os.path.basename(image_path).split("_")[-1].split(".")[0]
         
-        csv_path = os.path.join(current_dir, 'RGB_values_test.csv')
         df = pd.DataFrame([[sample_id, r, g, b]], columns=["Sample_ID", "Red", "Green", "Blue"])
         df.to_csv(csv_path, mode='a', header=not os.path.exists(csv_path), index=False)
-        
-        print(f"Saved RGB values to {csv_path}")
+        print(f"Saved RGB to {csv_path}")
+
     except Exception as e:
-        print(f"Error processing RGB values: {e}")
+        print(f"Error extracting RGB: {e}")
 
-def process_image():
-    image_data = capture_image()
-    if image_data and image_data[0] is not None and image_data[1] is not None:
-        extract_rgb(image_data[0], image_data[1])
-    else:
-        print("Skipping RGB extraction due to image capture failure.")
+# =============================================================================
+# region Main Process Image
+# =============================================================================
 
-        
+def process_image() -> None:
+    """Captures image and extracts RGB."""
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Capture and process image
+    try:
+        result = capture_image(current_dir)
+        if result:
+            extract_rgb(current_dir, *result)
+    except Exception as e:
+        print(f"Skipping RGB extraction: {e}")
+
+# =============================================================================
+# region Main 
+# =============================================================================
 if __name__ == "__main__":
     process_image()

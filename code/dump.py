@@ -1,5 +1,9 @@
 import json, os
 
+# =============================================================================
+# region positions
+# =============================================================================
+
 positions = {
     "home" : [1.3348536491394043, -1.6144734821715296, 1.5730488936053675, -1.5615404548919578, -1.5539191404925745, -0.2927349249469202],
     "pickup": [
@@ -30,19 +34,28 @@ positions = {
     ] 
 }
 
+# =============================================================================
+# region Dump
+# =============================================================================
+
 def dump(positions):
-    """Dumps the `positions` dictionary into a JSON file named 'positions.json' in the current directory."""
+    """ Saves the `positions` dictionary into a JSON file named 'positions.json' in the current directory """
 
     # Finds/Makes data dir in current dir and saves file path
     current_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(current_dir, "data")
     os.makedirs(data_dir, exist_ok=True)
+    
     file_name = "positions.json"
     file_path = os.path.join(data_dir, file_name)
 
     # Write the positions dictionary to a JSON file
     with open(file_path, "w") as file:
         json.dump(positions, file, indent=4)
+
+# =============================================================================
+# region Main
+# =============================================================================
 
 if __name__ == '__main__':
     dump(positions)
