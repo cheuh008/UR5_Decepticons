@@ -1,5 +1,5 @@
 
-import sys, os, json, math, asyncio, threading, cv2
+import sys, os, json, math, threading, cv2, time 
 import numpy as np
 
 # Add the directory containing rexiq_preamble.py to the Python search path
@@ -42,7 +42,7 @@ def check():
     ungrab()
 
     move_to(POSITIONS['home'])
-    asyncio.sleep(SLEEP_TIME)
+    time.sleep(SLEEP_TIME)
 
     move_to(POSITIONS['stirer'])
     grab()
@@ -69,9 +69,8 @@ def workflow(i):
     colour_change = check()
     
     while not colour_change and rounds < MAX_ROUNDS:
-        asyncio.run(check())
+        check()
         rounds += 1
-        asyncio.sleep(SLEEP_TIME)
         if colour_change:
             print("Yay")
         else:
@@ -101,4 +100,4 @@ def degreestorad(list):
     return list
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()
