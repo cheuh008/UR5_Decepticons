@@ -37,7 +37,7 @@ gripper.connect(HOST, 63352)
 # region Helper Function
 # =============================================================================
 
-def move_to(key: str, i: Optional[int] = None) -> None:
+def move_to(key: str, i= None) -> None:
     """Moves Robot Arm (Rex) to the specified position."""
     pos = POSITIONS[key][i] if i else POSITIONS[key]
     Rex.move_joint_list(pos, 0.7, 0.5, 0.05)
