@@ -10,7 +10,6 @@ from utils.UR_Functions import URfunctions as URControl
 from robotiq.robotiq_gripper import RobotiqGripper
 from camera import process_image
 
-iterations = 4
 with open("positions.json", "r") as json_file:
     POSITIONS = json.load(json_file)
 
@@ -18,6 +17,8 @@ HOST = "192.168.0.2"
 PORT = 30003
 MAX_ROUNDS = 2
 SLEEP_TIME = 2
+ITERATIONS = 4
+
 
 rex = URControl(ip=HOST, port=PORT)
 gripper = RobotiqGripper()
@@ -36,7 +37,7 @@ def ungrab():
     gripper.move(0, 125, 125)
 
 def check():
-    # Loop?
+    """Workflow Loop, returns True for colour change else Fasle """
     move_to(POSITIONS['stir_interm'])
     move_to(POSITIONS['stirer'])
     ungrab()
@@ -55,7 +56,6 @@ def check():
 
 def workflow(i):
 
-    # Start
     ungrab()
     move_to(POSITIONS['home'])
     move_to((POSITIONS['pickup'])[i])
@@ -87,8 +87,8 @@ def workflow(i):
 
 def main():
     """Main execution function."""
-
-    for i in range(iterations):
+    
+    for i in range(ITERATIONS):
         print(f"Processing iteraation {i}")
         workflow(i)
 
