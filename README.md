@@ -5,10 +5,11 @@
 ---
 ## Team Memebrs:
 #### Cheif Data Scientist and Systems Engineer  
- - Harry **_Shockwave_** Cheung
+ - Harry **_Soundwave_** Cheung
 #### Cheif Frontend Developer and Creatives Director.
- - Justin * **_Starscream_**
+ - Justin **_Starscream_**
 #### Cheif Automation Engineer and Data Collector 
+
 - Marion * **_Skywarp_** Ridgeway
 ---
 ## Project Overview
@@ -64,7 +65,7 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
  - to make sure that your brnach is up to date with any changes to main before and after you work
    
    ```bash
-   git pull
+   git pull origin main
    ```
    
 4. **Make Changes and Commit:**
