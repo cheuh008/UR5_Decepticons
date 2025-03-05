@@ -9,8 +9,13 @@
 #### Cheif Frontend Developer and Creatives Director.
  - Justin **_Starscream_**
 #### Cheif Automation Engineer and Data Collector 
+<<<<<<< HEAD
 - Marion * **_Skywarp_** Ridgeway
 - 
+=======
+
+- Marion * **_Skywarp_** Ridgeway
+>>>>>>> 7f9d46b2a69c0d13d36b4b294d083012a8e4f27b
 ---
 ## Project Overview
 
