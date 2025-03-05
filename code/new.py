@@ -10,7 +10,8 @@ from utils.UR_Functions import URfunctions as URControl
 from robotiq.robotiq_gripper import RobotiqGripper
 from camera import process_image
 
-with open("positions.json", "r") as json_file:
+file_path = os.path.join(current_dir, 'data', 'positions.json')
+with open(file_path, "r") as json_file:
     POSITIONS = json.load(json_file)
 
 HOST = "192.168.0.2"

@@ -5,14 +5,15 @@ import pandas as pd
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 def capture_image():
-    save_path = os.path.join(current_dir, 'test_picture_store')
+    """Captures an image from the camera, crops it, and saves it to the 'data/images' directory"""
+    save_path = os.path.join(current_dir, 'data', 'images')
     os.makedirs(save_path, exist_ok=True)
     
     try:
         # Determine the next available file name
-        existing_files = [f for f in os.listdir(save_path) if f.startswith("captured_image_") and f.endswith(".jpg")]
+        existing_files = [f for f in os.listdir(save_path) if f.startswith("img_") and f.endswith(".jpg")]
         next_number = max([int(f.split("_")[-1].split(".")[0]) for f in existing_files], default=-1) + 1
-        img_name = os.path.join(save_path, f"captured_image_{next_number}.jpg")
+        img_name = os.path.join(save_path, f"img_{next_number}.jpg")
         
         cam = cv2.VideoCapture(0)
         if not cam.isOpened():
@@ -27,13 +28,11 @@ def capture_image():
             print("Error: Failed to capture image.")
             return None, None
         
-        # Get image dimensions
-        h, w, _ = frame.shape
-        
-        # Define crop area for upper center slightly to the right
-        crop_width, crop_height = w // 4, h // 4  # Adjust for finer cropping
-        start_x = (w // 2) + (w // 8) - (crop_width // 2)  # Upper center, slightly right
-        start_y = h // 8  # Upper section
+        # Get image dimensions to crop 
+        h, w, _ = frame.shape        
+        crop_width, crop_height = w // 4, h // 4 
+        start_x = (w // 2) + (w // 8) - (crop_width // 2) 
+        start_y = h // 8  
         
         cropped_frame = frame[start_y:start_y + crop_height, start_x:start_x + crop_width]
         
@@ -76,6 +75,5 @@ def process_image():
         print("Skipping RGB extraction due to image capture failure.")
 
         
-# Run the Colour Change Detector
 if __name__ == "__main__":
-    pass
+    process_image()
