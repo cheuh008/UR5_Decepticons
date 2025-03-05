@@ -8,7 +8,7 @@ sys.path.append(os.path.join(current_dir, 'rexiq'))
 
 from utils.UR_Functions import URfunctions as URControl
 from robotiq.robotiq_gripper import RobotiqGripper
-from camera import colour_change_detector, capture_image, open_camera
+from camera import process_image
 
 iterations = 4
 with open("positions.json", "r") as json_file:
@@ -52,7 +52,9 @@ async def check():
     move_to(POSITIONS['home'])
     move_to(POSITIONS['camera'])
 
-    return colour_change_detector
+    process_image()
+
+    return False
 
 async def workflow(i):
 
