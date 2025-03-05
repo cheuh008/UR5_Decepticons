@@ -70,7 +70,6 @@ camera_thread = threading.Thread(target=asyncio.run, args=(open_camera(),))
 camera_thread.start()
 
 async def main():
->>>>>>> origin/Soundwave
     robot = URControl(ip="192.168.0.2", port=30003)
     gripper = RobotiqGripper()
     gripper.connect("192.168.0.2", 63352)
@@ -139,7 +138,6 @@ async def main():
     goto(end_plate_0)
     open_gripper()
     goto(new_home)
->>>>>>> origin/Soundwave
 
 def degreestorad(list):
     for i in range(6):
