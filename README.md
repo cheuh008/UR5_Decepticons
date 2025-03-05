@@ -9,17 +9,8 @@
 #### Cheif Frontend Developer and Creatives Director.
  - Justin **_Starscream_**
 #### Cheif Automation Engineer and Data Collector 
-<<<<<<< HEAD
-<<<<<<< HEAD
 - Marion * **_Skywarp_** Ridgeway
-- 
-=======
 
-- Marion * **_Skywarp_** Ridgeway
->>>>>>> 7f9d46b2a69c0d13d36b4b294d083012a8e4f27b
-=======
-- Marion **_Skywarp_** Reidgway
->>>>>>> dc64a45 (rebase (#7))
 ---
 ## Project Overview
 
@@ -65,10 +56,6 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
    ```bash
    git checkout Skywarp
    ```
-   or make your own branch:
-   ```bash
-   git checkout -b [branch-name]
-   ```
 3. **Pull the latest update from main**
 
  - to make sure that your brnach is up to date with any changes to main before and after you work
@@ -98,13 +85,13 @@ To contribute to the Decepticons Project, you'll need to use Git. Here are some 
 - Pull from main again to make sure that all the changes and updates are synced up and any conflicts are resolved,
    - ie either merging with the updated content or debugging to make sure updates are compatible
     ```bash
-   git pull --rebase
+   git rebase main
    ```
 *  - --rebase is used to avoid unnecessary merge commits and from the main brnach and reapplying your commits over the top
    - conflicts will arise from updated files and vs code is usually pretty good about merging conflicts but its a good idea to double check.
    - once resolved you can stage the resolved changes via
    ```bash
-   git add <conflict-file> or . 
+   git add . 
    ```
    and then
    ```bash
