@@ -110,14 +110,13 @@ def main():
         move_to('start')
 
         # Debug Overide
-        check(slp=0, tries=0)    
+        check()    
 
         move_to('end_interm', i)
         move_to('end', i)
         ungrab()
         move_to('home')
         print("Workflow End")
-        #debug(i)
 
     print("All vials processed. Exiting program.")
 
@@ -128,7 +127,6 @@ def main():
 if __name__ == '__main__':
     main()
     print("Workflow End")
-
 
     # Debug    
     # i = 0
