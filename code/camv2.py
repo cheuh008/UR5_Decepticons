@@ -4,6 +4,7 @@ import time
 import csv
 
 def process_image(i):
+    i += 1
     # Initialize the camera
     cap = cv2.VideoCapture(0)  # 0 is the default camera
 
@@ -60,4 +61,4 @@ def process_image(i):
 
 
 if __name__ == "__main__":
-    process_image()
+    process_image(0)
