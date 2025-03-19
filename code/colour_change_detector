@@ -1,0 +1,53 @@
+import cv2
+import numpy as np
+
+def colour_changed_detect():
+    # Initialize the camera
+    cap = cv2.VideoCapture(0)  # 0 is the default camera
+
+    # Define the region of interest (ROI) coordinates
+    x, y, w, h = 100, 100, 50, 50  # Example: a 50x50 square at (100, 100)
+
+    try:
+        # Capture a single frameframe
+        ret, frame = cap.read()
+        if not ret:
+            print("Failed to capture image.")
+            return
+
+        # Extract the ROI
+        roi = frame[y:y+h, x:x+w]
+
+        # Check if the ROI is colorless or colored by examining each pixel
+        is_colored = is_colored(roi)
+
+        # Print the classification result
+        if is_colored:
+            print("The ROI is colored.")
+        else:
+            print("The ROI is colorless.")
+
+        # Display the frame with the ROI highlighted
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)  # Draw rectangle around ROI
+        cv2.imshow('Captured Image with ROI', frame)
+
+        # Wait for any key to close the image window
+        cv2.waitKey(0)
+
+    finally:
+        # Release the camera and close all OpenCV windows
+        cap.release()
+        cv2.destroyAllWindows()
+
+def is_colored(roi):
+    # Loop through each pixel in the ROI and check if it's close to grayscale
+    for row in roi:
+        for pixel in row:
+            r, g, b = pixel
+            # Check if the pixel is close to grayscale (i.e., r, g, b are similar)
+            if abs(r - g) > 30 or abs(g - b) > 30 or abs(r - b) > 30:
+                return True  # If we find a colored pixel, return True
+    return False  # If all pixels are grayscale, return False
+
+if __name__ == "__main__":
+    colour_changed_detect()
