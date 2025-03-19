@@ -1,6 +1,7 @@
 # =============================================================================
 # region Imports
 # =============================================================================
+import cv2
 import sys
 import os
 import json
@@ -32,21 +33,30 @@ file_path = os.path.join(current_dir, 'data', 'positions.json')
 with open(file_path, "r") as json_file:
     POSITIONS = json.load(json_file)
 
+file_path = os.path.join(current_dir, 'data', 'positions.json')
+with open(file_path, "r") as json_file:
+    POSITIONS = json.load(json_file)
+
 # =============================================================================
 # region Helper Function
 # =============================================================================
 
 def move_to(key: str, i = None):
+def move_to(key: str, i = None):
     """Moves Robot Arm (Rex) to the specified position."""
+    pos = POSITIONS[key] if i is None else POSITIONS[key][i]
+    Rex.move_joint_list(pos, 1, 0.75, 0.05)
     pos = POSITIONS[key] if i is None else POSITIONS[key][i]
     Rex.move_joint_list(pos, 1, 0.75, 0.05)
     print(f"Moving to {key}"  + (f" (for vial: {i})" if i else ""))
 
 def grab():
+def grab():
     """Close the gripper """
     print("Closing Gripper, Grabbing Vial")
     gripper.move(255, 125, 125)
 
+def ungrab():
 def ungrab():
     """Opens the gripper """
     print("Opening Gripper, Releasing Vial")
@@ -88,8 +98,41 @@ def check(slp = 5, tries= 2, colour_change = False, round = 0,):
         process_image()
         round += 1     
         # detector loop break
+def check(slp = 5, tries= 2, colour_change = False, round = 0,):
+    """ Colour Change detector Loop 
+
+    Parameters:
+        tries (int): The number of tries (iterations) the loop will run. Default is 2.
+
+        slp (int or float): The number of seconds to wait (sleep) between each check. Default is 5 seconds.
+        colour_change (bool): A flag indicating whether a color change has occurred. 
+                            The loop will stop if this is True. Default is False.
+        round (int): Starting round / iterations. Default is 2.
+
+    Returns: None
+    """
+    
+    while not colour_change and round <= tries:
+        # Vial Drop Off
+        move_to('stir_interm')
+        move_to('stirer')
+        ungrab()
+        # Vial Waititing
+        move_to('stir_interm')
+        time.sleep(slp)
+        print(f"Wating for {slp} seconds")
+        # Vial Pickup
+        move_to('stirer')
+        grab()
+        move_to('stir_interm')
+        # Camera AI Logic 
+        move_to('camera')
+        process_image()
+        round += 1     
+        # detector loop break
         if colour_change:
             print("Yay")
+            return
             return
         else:
             print(f"No Colour Change Detected, Attempt {round}/{tries}")
@@ -110,21 +153,40 @@ def main():
         move_to('start')
 
         # Debug Overide
-<<<<<<< HEAD
-        check()    
-=======
         check(slp=0, tries=0)    
->>>>>>> 199b6800f5aba7152ae69e187bdc9f029d51d389
 
         move_to('end_interm', i)
         move_to('end', i)
         ungrab()
         move_to('home')
         print("Workflow End")
-<<<<<<< HEAD
-=======
         #debug(i)
->>>>>>> 199b6800f5aba7152ae69e187bdc9f029d51d389
+
+        print(f"No Colour Change Detected, Attempt {round}/{tries}")
+
+    print("Timeout: Max Tries. Poceeding to end")        
+    return 
+
+def main():
+    """ Executes the workflow for a (i) vial(s) """ 
+
+    # i = 0 debug override default 4
+    for i in range(ITERATIONS):
+        print(f"Processing iteraation {i}")
+        ungrab() 
+        move_to('start')
+        move_to('pickup', i)
+        grab()
+        move_to('start')
+
+        # Debug Overide
+        check()    
+
+        move_to('end_interm', i)
+        move_to('end', i)
+        ungrab()
+        move_to('home')
+        print("Workflow End")
 
     print("All vials processed. Exiting program.")
 
@@ -136,10 +198,6 @@ if __name__ == '__main__':
     main()
     print("Workflow End")
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 199b6800f5aba7152ae69e187bdc9f029d51d389
     # Debug    
     # i = 0
     # ungrab()
