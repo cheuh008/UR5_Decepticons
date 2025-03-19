@@ -127,7 +127,7 @@ def main():
 
 if __name__ == '__main__':
     main()
-    print("Workflow End")
+    # print("Workflow End")
 
 
     # Debug    
@@ -145,7 +145,7 @@ if __name__ == '__main__':
     # move_to('stirer')
     # grab()
     # move_to('stir_interm')
-    # move_to('camera')
+    move_to('camera')
     # move_to('end_interm', i)
     # move_to('end', i) 
     # ungrab()
