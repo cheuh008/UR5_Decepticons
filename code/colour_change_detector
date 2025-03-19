@@ -9,7 +9,7 @@ def colour_changed_detect():
     x, y, w, h = 100, 100, 50, 50  # Example: a 50x50 square at (100, 100)
 
     try:
-        # Capture a single frame
+        # Capture a single frameframe
         ret, frame = cap.read()
         if not ret:
             print("Failed to capture image.")
