@@ -12,7 +12,6 @@ sys.path.append(os.path.join(current_dir, 'robotiq'))
 
 from utils.UR_Functions import URfunctions as URControl
 from robotiq.robotiq_gripper import RobotiqGripper
-from camera import open_camera, box, detect
 
 # Constants
 HOST = "192.168.0.2"

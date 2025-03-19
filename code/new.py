@@ -26,9 +26,6 @@ HOST = "192.168.0.2"
 PORT = 30003
 ITERATIONS = 4
 
-# cap = cv2.VideoCapture(0)  # 0 is the default camera
-# x, y, w, h = 100, 100, 50, 50  # Example: a 50x50 square at (100, 100)
-
 Rex = URControl(ip=HOST, port=PORT)
 gripper = RobotiqGripper()
 gripper.connect(HOST, 63352)
@@ -92,8 +89,8 @@ def check(i = 0, slp = 5, tries= 2, colour_change = False, round = 0,):
         move_to('stir_interm')
         # Camera AI Logic 
         move_to('camera')
-        process_image(i)
 
+        process_image(i)
         round += 1     
         # detector loop break
         if colour_change:
@@ -108,6 +105,7 @@ def check(i = 0, slp = 5, tries= 2, colour_change = False, round = 0,):
 def main():
     """ Executes the workflow for a (i) vial(s) """ 
 
+# Open the camera
     # i = 0 debug override default 4
     for i in range(ITERATIONS):
         print(f"Processing iteraation {i}")
