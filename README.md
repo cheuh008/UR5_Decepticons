@@ -1,6 +1,6 @@
 # Decepticons Project: Transforming Chemistry with AI-Drive Robotics
 
-### **Team Lead:** Megan **_Megatron_** O'Neil
+### **Team Lead:** Megan **_Megatron_** O'Neill
 ####  Full-Stack Developer and Project Manager
 ---
 ## Team Memebrs:
