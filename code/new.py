@@ -42,7 +42,6 @@ with open(file_path, "r") as json_file:
 # =============================================================================
 
 def move_to(key: str, i = None):
-def move_to(key: str, i = None):
     """Moves Robot Arm (Rex) to the specified position."""
     pos = POSITIONS[key] if i is None else POSITIONS[key][i]
     Rex.move_joint_list(pos, 1, 0.75, 0.05)
@@ -51,12 +50,10 @@ def move_to(key: str, i = None):
     print(f"Moving to {key}"  + (f" (for vial: {i})" if i else ""))
 
 def grab():
-def grab():
     """Close the gripper """
     print("Closing Gripper, Grabbing Vial")
     gripper.move(255, 125, 125)
 
-def ungrab():
 def ungrab():
     """Opens the gripper """
     print("Opening Gripper, Releasing Vial")
