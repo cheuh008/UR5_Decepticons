@@ -46,7 +46,7 @@ def capture_image(current_dir: str) -> Optional[Tuple[str, np.ndarray]]:
         image_path = os.path.join(save_path, f"img_{next_number}.jpg")
 
         # Save cropped image
-        cv2.imwrite(image_path, cropped_image)
+        cv2.imwrite(image_path, frame )#cropped_image)
         print(f"Saved: {image_path}")
         return image_path, cropped_image
 
