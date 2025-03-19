@@ -92,14 +92,8 @@ def check(i = 0, slp = 5, tries= 2, colour_change = False, round = 0,):
         move_to('stir_interm')
         # Camera AI Logic 
         move_to('camera')
-<<<<<<< HEAD
-        process_image()
-        round += 1     
-        # detector loop break
 
-=======
         process_image(i)
-
         round += 1     
         # detector loop break
         if colour_change:
@@ -110,7 +104,6 @@ def check(i = 0, slp = 5, tries= 2, colour_change = False, round = 0,):
 
     print("Timeout: Max Tries. Poceeding to end")        
     return 
->>>>>>> b97d209ec636c3d63f0d0332fa06ecaea5f45b54
 
 def main():
     """ Executes the workflow for a (i) vial(s) """ 
