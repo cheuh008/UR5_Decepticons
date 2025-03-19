@@ -2,38 +2,22 @@ import cv2
 import numpy as np
 import time
 
-# Initialize the camera
 cap = cv2.VideoCapture(0)  # 0 is the default camera
-
-# Define the region of interest (ROI) coordinates
-x, y, w, h = 100, 100, 50, 50  # Example: a 50x50 square at (100, 100)
+x, y, w, h = 267, 102, 72, 78
 
 try:
     while True:
-        # Capture frame-by-frame
         ret, frame = cap.read()
         if not ret:
             break
 
-        # Extract the ROI
         roi = frame[y:y+h, x:x+w]
-
-        # Calculate the average color of the ROI
         average_color = np.mean(roi, axis=(0, 1)).astype(int)
-
-        # Get the current timestamp
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-
-        # Print the color data to the console
         print(f"Timestamp: {timestamp}, ROI Color (BGR): {average_color}")
-
-        # Display the frame with the ROI highlighted
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)  # Draw rectangle around ROI
         cv2.imshow('Camera Stream', frame)
 
-        # Break the loop if 'q' is pressed
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
 
 finally:
     # Release the camera and close all OpenCV windows
