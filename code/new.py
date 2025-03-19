@@ -26,9 +26,6 @@ HOST = "192.168.0.2"
 PORT = 30003
 ITERATIONS = 4
 
-# cap = cv2.VideoCapture(0)  # 0 is the default camera
-# x, y, w, h = 100, 100, 50, 50  # Example: a 50x50 square at (100, 100)
-
 Rex = URControl(ip=HOST, port=PORT)
 gripper = RobotiqGripper()
 gripper.connect(HOST, 63352)
