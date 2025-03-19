@@ -28,6 +28,7 @@ def process_image(i):
 
     colourless_threshold = 170
     tolerence = 20 #Allows slight varient in channels
+    
 
     try:
         last_capture_time = time.time()
