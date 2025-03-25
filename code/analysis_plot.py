@@ -7,7 +7,8 @@ from scipy.optimize import curve_fit
 
 # File path to your CSV
 csv_file = "RGB_values.csv"
-file_path = os.path.join(current_dir, 'data', 'positions.json')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(current_dir, 'data' ,csv_file)
 
 
 # Exponential decay function
@@ -19,7 +20,7 @@ def update(frame):
     plt.cla()  # Clear the previous plot
 
     # Read the CSV file
-    df = pd.read_csv(csv_file)
+    df = pd.read_csv(file_path)
 
     # Ensure the CSV has required columns
     if {"Timestamp", "R", "G", "B"}.issubset(df.columns):
