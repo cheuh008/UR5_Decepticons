@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,6 +7,8 @@ from scipy.optimize import curve_fit
 
 # File path to your CSV
 csv_file = "RGB_values.csv"
+file_path = os.path.join(current_dir, 'data', 'positions.json')
+
 
 # Exponential decay function
 def exp_decay(t, I0, k):
