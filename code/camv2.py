@@ -29,50 +29,46 @@ def process_image(i, cap):  # Added 'cap' parameter
     frame_count = 0
     frame_buffer = 2
     lim = 360
-    
     x, y, w, h = 306, 187, 118, 100  # Example: a 50x50 square at (100, 100)
 
-    try:
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                print("Error: Failed to capture frame.")
-                break
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            print("Error: Failed to capture frame.")
+            break
 
-            # Extract ROI and calculate average color
-            roi = frame[y:y+h, x:x+w]
-            average_color = np.mean(roi, axis=(0, 1)).astype(int)
-            timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-            print(f"Sample_ID: {i}, Timestamp: {timestamp}, ROI Color (BGR): {average_color}")
-            b, g, r = average_color
+        # Extract ROI and calculate average color
+        roi = frame[y:y+h, x:x+w]
+        average_color = np.mean(roi, axis=(0, 1)).astype(int)
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        print(f"Sample_ID: {i}, Timestamp: {timestamp}, ROI Color (BGR): {average_color}")
+        b, g, r = average_color
 
-            # Draw rectangle around ROI
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            cv2.imshow('Camera Stream', frame)
-          
-            frame_count += 1
-            if frame_count > frame_buffer:
-                if r + g + b > lim:
-                    print("I think its blank")
-                    return True
-                else:
-                    image_path = os.path.join(img_dir, f"img_{timestamp}.jpg")
-                    cv2.imwrite(image_path, frame)
-                    print(f"Saved: {image_path}")
+        # Draw rectangle around ROI
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        cv2.imshow('Camera Stream', frame)
+        
+        frame_count += 1
+        if frame_count > frame_buffer:
+            if r + g + b > lim:
+                print("I think its blank")
+                return True
+            else:
+                image_path = os.path.join(img_dir, f"img_{timestamp}.jpg")
+                cv2.imwrite(image_path, frame)
+                print(f"Saved: {image_path}")
 
-                    with open(file_path, mode='a', newline='') as file:
-                        writer = csv.writer(file)
-                        writer.writerow([i, timestamp, r, g, b])  # Separated RGB components
+                with open(file_path, mode='a', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow([i, timestamp, r, g, b])  # Separated RGB components
 
-            # Exit on 'q' key press
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+        # Exit on 'q' key press
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-            time.sleep(0.2)
+        time.sleep(0.2)
 
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return False
+
 
 if __name__ == "__main__":
     cam = open_camera()

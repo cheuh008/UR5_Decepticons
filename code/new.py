@@ -15,7 +15,7 @@ sys.path.append(os.path.join(current_dir, 'robotiq'))
 from utils.UR_Functions import URfunctions as URControl
 from utils.ika_serial_driver import IKADriver
 from robotiq.robotiq_gripper import RobotiqGripper
-from camv2 import process_image
+from camv2 import *
 
 # =============================================================================
 # region Constants
@@ -68,34 +68,38 @@ def ungrab():
 def main():
     """ Executes the workflow for (i) vial(s) """ 
 
-    for i in range(ITERATIONS): 
+    try:
+        cam = open_camera()
+        for i in range(ITERATIONS): 
 
+            print(f"Processing iteraation {i}")
+            ungrab() 
+            move_to('start')
+            move_to('pickup', i)
+            grab()
+            move_to('start')
+            move_to('stir_interm')
+            move_to('stirer')
+            ungrab()
+            move_to('stir_interm')
+            time.sleep(STIR_TIME)
+            print(f"Wating for {STIR_TIME} seconds")
+            move_to('stirer')
+            grab()
+            move_to('stir_interm')
+            move_to('camera')
+            process_image(i, cam)
 
-        print(f"Processing iteraation {i}")
-        ungrab() 
-        
-        move_to('start')
-        move_to('pickup', i)
-        grab()
-        move_to('start')
-        move_to('stir_interm')
-        move_to('stirer')
-        ungrab()
-        move_to('stir_interm')
-        time.sleep(STIR_TIME)
-        print(f"Wating for {STIR_TIME} seconds")
-        move_to('stirer')
-        grab()
-        move_to('stir_interm')
-        move_to('camera')
-        process_image(i)
+            move_to('cam_interm')
+            move_to('end_interm', i)
+            move_to('end', i)
+            ungrab()
+            move_to('home')
+            print("Workflow End")
+    
+    finally:
+        close_camera(cam)
 
-        move_to('cam_interm')
-        move_to('end_interm', i)
-        move_to('end', i)
-        ungrab()
-        move_to('home')
-        print("Workflow End")
  
 # =============================================================================
 # region Main
