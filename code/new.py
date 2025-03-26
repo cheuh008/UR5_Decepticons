@@ -68,8 +68,9 @@ def ungrab():
 def main():
     """ Executes the workflow for (i) vial(s) """ 
 
+    cam = CameraController()
     try:
-        cam = open_camera()
+  
         for i in range(ITERATIONS): 
 
             print(f"Processing iteraation {i}")
@@ -88,7 +89,7 @@ def main():
             grab()
             move_to('stir_interm')
             move_to('camera')
-            process_image(i, cam)
+            cam.process_image(i)
 
             move_to('cam_interm')
             move_to('end_interm', i)
@@ -98,8 +99,7 @@ def main():
             print("Workflow End")
     
     finally:
-        close_camera(cam)
-
+        cam.close() 
  
 # =============================================================================
 # region Main
