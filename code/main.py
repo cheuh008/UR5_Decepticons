@@ -16,7 +16,7 @@ sys.path.append(os.path.join(current_dir, 'robotiq'))
 from utils.UR_Functions import URfunctions as URControl
 from utils.ika_serial_driver import IKADriver
 from robotiq.robotiq_gripper import RobotiqGripper
-from camv2 import *
+from camv3 import CameraController
 
 # =============================================================================
 # region Constants
@@ -27,10 +27,10 @@ PORT = 30003
 ITERATIONS = 4 # index starts at 0 
 STIR_TIME = 2
 
-# stir = IKADriver('ttyACM0')
+stir = IKADriver('ttyACM0')
 # stir.setStir(15000)
 # stir.startStir()
-# stir.stopStir()
+stir.stopStir()
 
 Rex = URControl(ip=HOST, port=PORT)
 gripper = RobotiqGripper()
@@ -40,6 +40,7 @@ gripper.connect(HOST, 63352)
 file_path = os.path.join(current_dir, 'data', 'positions.json')
 with open(file_path, "r") as json_file:
     POSITIONS = json.load(json_file)
+
 
 # =============================================================================
 # region Helper Function
@@ -65,26 +66,6 @@ def ungrab():
 # =============================================================================
 # region Main Work
 # =============================================================================
-import threading
-import time
-from camera import CameraController
-
-# Constants
-ITERATIONS = 5
-STIR_TIME = 5  # seconds
-
-# Robot control functions (implement according to your hardware)
-def ungrab():
-    print("Ungrabbing")
-    time.sleep(0.1)
-
-def grab():
-    print("Grabbing")
-    time.sleep(0.1)
-
-def move_to(position, iteration=None):
-    print(f"Moving to {position}{' '+str(iteration) if iteration is not None else ''}")
-    time.sleep(0.5)  # Simulate movement time
 
 def main():
     # Initialize camera
@@ -123,9 +104,9 @@ def main():
             # Imaging sequence
             move_to('camera')
             print("Processing image...")
-            is_blank = camera.process_image(i)
-            if is_blank:
-                print("Blank detected - adjusting...")
+            is_blank = False
+            while not is_blank:
+                is_blank = camera.process_image(i)
                 time.sleep(0.2)
             
             # Dropoff sequence

@@ -16,7 +16,7 @@ sys.path.append(os.path.join(current_dir, 'robotiq'))
 from utils.UR_Functions import URfunctions as URControl
 from utils.ika_serial_driver import IKADriver
 from robotiq.robotiq_gripper import RobotiqGripper
-from camv2 import *
+from camv2 import process_image
 
 # =============================================================================
 # region Constants
@@ -68,49 +68,34 @@ def ungrab():
 
 def main():
     """ Executes the workflow for (i) vial(s) """ 
-    # Set up and start camera thread
-    open_camera.running = True
-    cam = threading.Thread(target=open_camera)
-    cam.start()
-
-    try:
-        for i in range(ITERATIONS): 
-            print(f"Processing iteration {i}")
-            ungrab() 
-            move_to('start')
-            move_to('pickup', i)
-            grab()
-            move_to('start')
-            move_to('stir_interm')
-            move_to('stirer')
-            ungrab()
-            move_to('stir_interm')
-            
-            print(f"Waiting for {STIR_TIME} seconds")
-            # During this wait, camera continues recording in the other thread
-            time.sleep(STIR_TIME)
-            
-            move_to('stirer')
-            grab()
-            move_to('stir_interm')
-            move_to('camera')
-            
-            if not process_image(i):
-                time.sleep(0.2)
-
-            move_to('cam_interm')
-            move_to('end_interm', i)
-            move_to('end', i)
-            ungrab()
-            move_to('home')
-            print(f"Iteration {i} complete")
+    for i in range(ITERATIONS): 
+        print(f"Processing iteration {i}")
+        ungrab() 
+        move_to('start')
+        move_to('pickup', i)
+        grab()
+        move_to('start')
+        move_to('stir_interm')
+        move_to('stirer')
+        ungrab()
+        move_to('stir_interm')
         
+        print(f"Waiting for {STIR_TIME} seconds")
+        time.sleep(STIR_TIME)
+        move_to('stirer')
+        grab()
+        move_to('stir_interm')
+        move_to('camera')
+        process_image(i)
+        move_to('cam_interm')
+        move_to('end_interm', i)
+        move_to('end', i)
+        ungrab()
+        move_to('home')
+        print(f"Iteration {i} complete")
         print("Workflow End")
     
-    finally:
-        # Clean up camera thread
-        open_camera.running = False
-        cam.join()  # Wait for camera thread to finish
+
 
  
 # =============================================================================

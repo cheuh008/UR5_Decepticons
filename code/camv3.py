@@ -81,3 +81,19 @@ class CameraController:
 
     def stop(self):
         self.running = False
+
+    
+
+if __name__ == '__main__':
+
+    camera = CameraController()
+    cam_thread = threading.Thread(target=camera.start_capture)
+    cam_thread.start()
+
+    is_blank = False
+    while not is_blank:
+        is_blank = camera.process_image(0)
+        time.sleep(0.2)
+
+    camera.stop()
+    cam_thread.join()
