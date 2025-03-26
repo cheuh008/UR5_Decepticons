@@ -65,52 +65,87 @@ def ungrab():
 # =============================================================================
 # region Main Work
 # =============================================================================
+import threading
+import time
+from camera import CameraController
+
+# Constants
+ITERATIONS = 5
+STIR_TIME = 5  # seconds
+
+# Robot control functions (implement according to your hardware)
+def ungrab():
+    print("Ungrabbing")
+    time.sleep(0.1)
+
+def grab():
+    print("Grabbing")
+    time.sleep(0.1)
+
+def move_to(position, iteration=None):
+    print(f"Moving to {position}{' '+str(iteration) if iteration is not None else ''}")
+    time.sleep(0.5)  # Simulate movement time
 
 def main():
-    """ Executes the workflow for (i) vial(s) """ 
-    # Set up and start camera thread
-    open_camera.running = True
-    cam = threading.Thread(target=open_camera)
-    cam.start()
+    # Initialize camera
+    camera = CameraController()
+    cam_thread = threading.Thread(target=camera.start_capture)
+    cam_thread.start()
+    
+    # Wait briefly for camera to initialize
+    time.sleep(1)
 
     try:
         for i in range(ITERATIONS): 
-            print(f"Processing iteration {i}")
+            print(f"\n=== Processing iteration {i} ===")
+            
+            # Pickup sequence
             ungrab() 
             move_to('start')
             move_to('pickup', i)
             grab()
             move_to('start')
+            
+            # Stirring sequence
             move_to('stir_interm')
             move_to('stirer')
             ungrab()
             move_to('stir_interm')
             
-            print(f"Waiting for {STIR_TIME} seconds")
-            # During this wait, camera continues recording in the other thread
-            time.sleep(STIR_TIME)
+            print(f"Stirring for {STIR_TIME} seconds...")
+            time.sleep(STIR_TIME)  # Camera continues recording during this
             
+            # Post-stir sequence
             move_to('stirer')
             grab()
             move_to('stir_interm')
-            move_to('camera')
             
-            if not process_image(i):
+            # Imaging sequence
+            move_to('camera')
+            print("Processing image...")
+            is_blank = camera.process_image(i)
+            if is_blank:
+                print("Blank detected - adjusting...")
                 time.sleep(0.2)
-
+            
+            # Dropoff sequence
             move_to('cam_interm')
             move_to('end_interm', i)
             move_to('end', i)
             ungrab()
             move_to('home')
-            print(f"Iteration {i} complete")
+            
+            print(f"Iteration {i} complete\n")
         
-        print("Workflow End")
+        print("=== Workflow Complete ===")
     
+    except Exception as e:
+        print(f"Error occurred: {e}")
     finally:
-        # Clean up camera thread
-        open_camera.running = False
-        cam.join()  # Wait for camera thread to finish
+        # Clean up
+        camera.stop()
+        cam_thread.join()
+        print("Resources released")
 
  
 # =============================================================================
