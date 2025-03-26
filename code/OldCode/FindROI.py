@@ -22,6 +22,6 @@ x, y, w, h = roi
 
 roi_frame = frame[y:y+h, x:x+w]
 
-print(x, y, w, h)
+print(roi)
 cap.release()
 cv2.destroyAllWindows()

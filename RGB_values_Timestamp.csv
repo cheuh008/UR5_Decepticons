@@ -1,0 +1,2 @@
+Sample ID,Timestamp,ROI Colour (BGR),RGB Sum,Colored?
+1,2025-03-26 11:15:02,"[np.int64(70), np.int64(75), np.int64(76)]",221,No

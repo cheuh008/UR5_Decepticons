@@ -20,12 +20,11 @@ def process_image(i):
     frame_buffer = 2
     lim = 360
     
+    x, y, w, h = 306, 187, 118, 100  # Example: a 50x50 square at (100, 100)
+
     cap = cv2.VideoCapture(0)  # 0 is the default camera
     if not cap.isOpened():
         print("Error: Could not open camera.")
-        return
-
-    x, y, w, h = 351, 72, 29, 39   # Example: a 50x50 square at (100, 100)
 
     try:
         while True:

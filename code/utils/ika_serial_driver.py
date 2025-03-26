@@ -112,8 +112,3 @@ class IKADriver:
         return s[0]
 
 # sudo chmod 666 /dev/ttyACM0
-stir = IKADriver('/dev/ttyACM0')
-stir.setStir(500)
-stir.startStir()
-time.sleep(20)
-stir.stopStir()
