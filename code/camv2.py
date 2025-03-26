@@ -5,9 +5,19 @@ import time
 import csv
 
 
+def open_camera():
+    cap = cv2.VideoCapture(0)  # 0 is the default camera
+    if not cap.isOpened():
+        print("Error: Could not open camera.")
+    return cap
 
-def process_image(i):
+def close_camera(cap):  # Added 'cap' parameter and fixed function name typo
+    # Release the camera and close all OpenCV windows
+    cap.release()
+    cv2.destroyAllWindows()
 
+
+def process_image(i, cap):  # Added 'cap' parameter
     current_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(current_dir, "data")
     img_dir = os.path.join(data_dir, "images")
@@ -21,10 +31,6 @@ def process_image(i):
     lim = 360
     
     x, y, w, h = 306, 187, 118, 100  # Example: a 50x50 square at (100, 100)
-
-    cap = cv2.VideoCapture(0)  # 0 is the default camera
-    if not cap.isOpened():
-        print("Error: Could not open camera.")
 
     try:
         while True:
@@ -49,17 +55,14 @@ def process_image(i):
                 if r + g + b > lim:
                     print("I think its blank")
                     return True
-                    
                 else:
                     image_path = os.path.join(img_dir, f"img_{timestamp}.jpg")
-                    cv2.imwrite(image_path, frame )
+                    cv2.imwrite(image_path, frame)
                     print(f"Saved: {image_path}")
 
                     with open(file_path, mode='a', newline='') as file:
                         writer = csv.writer(file)
-                        writer.writerow([i, timestamp, average_color])
-
-            
+                        writer.writerow([i, timestamp, r, g, b])  # Separated RGB components
 
             # Exit on 'q' key press
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -67,11 +70,12 @@ def process_image(i):
 
             time.sleep(0.2)
 
-    finally:
-        # Release the camera and close all OpenCV windows
-        cap.release()
-        cv2.destroyAllWindows()
-
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
 
 if __name__ == "__main__":
-    process_image(0)
+    cam = open_camera()
+    process_image(0, cam)
+    process_image(1, cam)
+    close_camera(cam)
