@@ -22,7 +22,7 @@ from camv2 import process_image
 
 HOST = "192.168.0.2"
 PORT = 30003
-ITERATIONS = 3 # index starts at 0 
+ITERATIONS = 4 # index starts at 0 
 STIR_TIME = 2
 
 Rex = URControl(ip=HOST, port=PORT)
