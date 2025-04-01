@@ -27,10 +27,10 @@ PORT = 30003
 ITERATIONS = 4 # index starts at 0 
 STIR_TIME = 2
 
-stir = IKADriver('ttyACM0')
+# stir = IKADriver('ttyACM0')
 # stir.setStir(15000)
 # stir.startStir()
-stir.stopStir()
+# stir.stopStir()
 
 Rex = URControl(ip=HOST, port=PORT)
 gripper = RobotiqGripper()

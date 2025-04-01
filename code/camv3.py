@@ -61,7 +61,7 @@ class CameraController:
             average_color = np.mean(roi, axis=(0, 1)).astype(int)
             timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
             b, g, r = average_color
-            print(f"Sample_ID: {i}, Timestamp: {timestamp}, ROI Color (BGR): {average_color}")
+            print(f"Sample_ID: {i}, Timestamp: {timestamp}, ROI Color (RGB): {average_color}")
 
             if frame_count > 0:  # Skip first frame (often has artifacts)
                 if r + g + b > self.lim:
