@@ -1,82 +1,98 @@
 import os
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from scipy.optimize import curve_fit
+from datetime import datetime
 
-# File path to your CSV
-csv_file = "RGB_values.csv"
-current_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(current_dir, 'data' ,csv_file)
-
-def plot_rgb_from_csv(csv_file):
-        df = pd.read_csv(csv_file)
-        df['Timestamp'] = pd.to_datetime(df['Timestamp'])
-
-        for sample_id, group in df.groupby('Sample_ID'):
-                plt.figure(figsize=(10,5))
-                plt.plot(group['Timestamp'], group['R'], label='Red', marker='o')
-                plt.plot(group['Timestamp'], group['G'], label='Red', marker='o')
-                plt.plot(group['Timestamp'], group['B'], label='Red', marker='o')
+def plotter():
+    # File path setup
+    csv_file = "RGB_values.csv"
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(current_dir, 'data')
+    file_path = os.path.join(data_dir, csv_file)
 
 
-                plt.xlabel("Time")
-                plt.ylabel("Color Intensity")
-                plt.title("RGB Values of Sample Over Time")
-                plt.legend()
-                plt.grid(True)
-                plt.xticks(rotation=45)
-                plt.tight_layout()
-                plt.show()
+    # Create a new plots subfolder with timestamp
+    timestamp = datetime.now().strftime("run_%Y-%m-%d_%H-%M-%S")
+    plots_dir = os.path.join(data_dir, 'Plots', timestamp)
+    os.makedirs(plots_dir, exist_ok=True)  # Create the nested folder
 
+    try:
+        # Read CSV data
+        data = pd.read_csv(file_path)
         
-# Exponential decay function
-# def exp_decay(t, I0, k):
-    # return I0 * np.exp(-k * t)
+        # Clean column names by stripping whitespace
+        data.columns = data.columns.str.strip()
+        
+        # Convert Time column to datetime if it's not already
+        if not pd.api.types.is_datetime64_any_dtype(data['Time']):
+            data['Time'] = pd.to_datetime(data['Time'])
+        
+        #Generate unique sample IDs like 0.0, 1.0, 2.1, etc. NOT TOO IMPORTANT 
+        #data['Sample_ID'] = data['Sample_ID'].astype(str).str.strip()
+        #data['Sample_Instance'] = data.groupby('Sample_ID').cumcount()
+        #data['Unique_Sample_ID'] = data['Sample_ID'] + '.' + data['Sample_Instance'].astype(str)
 
-# Function to update the plot
-# def update(frame):
-    # plt.cla()  # Clear the previous plot
+        # Group by Sample_ID
+        grouped = data.groupby('Sample_ID')
 
-    # Read the CSV file
-    #df = pd.read_csv(file_path)
+        # Plot for each sample
+        for sample_id, group in grouped:        
+            # Plotting
+            plt.figure(figsize=(12, 8))  # Slightly larger figure
+        
+            # Plot RGB values with different markers
+            plt.plot(group['Time'], group['R'], 'r-', label='Red', marker='o', markersize=6)
+            plt.plot(group['Time'], group['G'], 'g-', label='Green', marker='o', markersize=6)
+            plt.plot(group['Time'], group['B'], 'b-', label='Blue', marker='o', markersize=6)
+        
+            # Customize plot
+            plt.title(f'RGB Values Over Time for Sample ID: {sample_id}', fontsize=16, pad=20)
+            plt.xlabel('Time', fontsize=14)
+            plt.ylabel('Color Value (0-255)', fontsize=14)
+            plt.legend(fontsize=12, loc='upper right')
+            plt.grid(True, linestyle='--', alpha=0.6)
+        
+            # Format x-axis
+            plt.xticks(rotation=45, ha='right')
+            plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%H:%M:%S\n%Y-%m-%d'))
+        
+            # Annotate points (only if Sample_ID is unique to avoid clutter)
+            if len(data['Sample_ID'].unique()) == len(data):
+                for i, row in data.iterrows():
+                    plt.annotate(row['Sample_ID'], 
+                                (row['Time'], row['R']), 
+                                textcoords="offset points",
+                                xytext=(5, 5), 
+                                ha='left',
+                                fontsize=8,
+                                bbox=dict(boxstyle='round,pad=0.2', fc='white', alpha=0.7))
+        
+            plt.tight_layout()
+            # Save plot to file
+            filename = f'Sample_ID_{sample_id}_plot.png'
+            filepath = os.path.join(plots_dir, filename)
+            plt.savefig(filepath, dpi=300)
+            plt.show()
+            plt.close()
 
-    # Ensure the CSV has required columns
-    #if {"Timestamp", "R", "G", "B"}.issubset(df.columns):
-        #df["Timestamp"] = pd.to_datetime(df["Timestamp"])
-        #df["Elapsed Time"] = (df["Timestamp"] - df["Timestamp"].iloc[0]).dt.total_seconds()
+        print(f"Plots saved to: {plots_dir}")
 
-        # Calculate perceived brightness (luminance)
-        # df["Luminance"] = 0.299 * df["R"] + 0.587 * df["G"] + 0.114 * df["B"]
+    except FileNotFoundError:
+        print(f"Error: File not found at {file_path}")
+        print("Please ensure:")
+        print(f"1. The file '{csv_file}' exists in the 'data' directory")
+        print("2. The 'data' directory is in the same folder as your script")
+    except KeyError as e:
+        print(f"Error: Missing required column - {str(e)}")
+        print("Your CSV file needs these columns: 'Sample_ID', 'Time', 'R', 'G', 'B'")
+        if 'data' in locals():
+            print("\nDetected columns in your CSV:", data.columns.tolist())
+    except Exception as e:
+        print(f"An unexpected error occurred: {str(e)}")
+        if 'data' in locals():
+            print("\nFirst few rows of data:")
+            print(data.head())
 
-        # Fit exponential decay model if enough points exist
-        # if len(df) > 5:  # Need at least 5 points for a good fit
-            # try:
-                #popt, _ = curve_fit(exp_decay, df["Elapsed Time"], df["Luminance"], p0=(df["Luminance"].iloc[0], 0.01))
-                #I0, k = popt  # Extract decay constant
-                
-                # Plot fitted decay curve
-                #t_fit = np.linspace(df["Elapsed Time"].min(), df["Elapsed Time"].max(), 100)
-                #I_fit = exp_decay(t_fit, I0, k)
-                #plt.plot(df["Timestamp"], df["Luminance"], 'ko', label="Measured Intensity")  # Raw data
-                #plt.plot(df["Timestamp"].iloc[0] + pd.to_timedelta(t_fit, unit='s'), I_fit, 'r-', label=f"Fit: k={k:.4f} s⁻¹")
 
-                # Print decay rate in console
-                #print(f"Decay constant (k): {k:.4f} s⁻¹")
-            #except RuntimeError:
-                #print("Fit failed, not enough data points or too much noise.")
-
-        # Plot settings
-        #plt.xlabel("Time")
-        #plt.ylabel("Color Intensity (Luminance)")
-        #plt.title("Reaction Kinetics: Color Fading Over Time")
-        #plt.xticks(rotation=45)
-        #plt.legend()
-        #plt.grid(True)
-
-# Set up the animation
-#fig = plt.figure(figsize=(10, 5))
-#ani = animation.FuncAnimation(fig, update, interval=1000)  # Update every second
-
-#plt.show()
+if __name__ == '__main__':
+    plotter()

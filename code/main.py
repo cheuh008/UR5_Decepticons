@@ -16,7 +16,8 @@ sys.path.append(os.path.join(current_dir, 'robotiq'))
 from utils.UR_Functions import URfunctions as URControl
 from utils.ika_serial_driver import IKADriver
 from robotiq.robotiq_gripper import RobotiqGripper
-from camv3 import CameraController
+from camv4 import CameraController
+from analysis_plot import plotter
 
 # =============================================================================
 # region Constants
@@ -25,7 +26,7 @@ from camv3 import CameraController
 HOST = "192.168.0.2"
 PORT = 30003
 ITERATIONS = 4 # index starts at 0 
-STIR_TIME = 2
+STIR_TIME = 10
 
 # stir = IKADriver('ttyACM0')
 # stir.setStir(15000)
@@ -135,6 +136,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+    plotter()
 
     # ungrab() 
     # grab()

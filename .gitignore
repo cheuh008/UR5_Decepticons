@@ -1,6 +1,7 @@
 # venv?
 .ur5
 images/
+Plots
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

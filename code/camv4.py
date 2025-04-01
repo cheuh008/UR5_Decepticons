@@ -93,9 +93,48 @@ class CameraController:
         self.cap.release()
         cv2.destroyAllWindows()
 
+
     def process_image(self, i):
-        # (Your existing code for saving data)
-        pass
+        # Setup directories
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        data_dir = os.path.join(current_dir, "data")
+        img_dir = os.path.join(data_dir, "images")
+        os.makedirs(img_dir, exist_ok=True)
+        file_path = os.path.join(data_dir, "RGB_values.csv")
+
+        frame_count = 0
+        blank_detected = False
+
+        while frame_count <= self.frame_buffer and not blank_detected:
+            with self.lock:
+                if self.current_frame is None:
+                    time.sleep(0.1)
+                    continue
+                
+                frame = self.current_frame.copy()
+            
+            # Process frame
+            roi = frame[self.y:self.y+self.h, self.x:self.x+self.w]
+            average_color = np.mean(roi, axis=(0, 1)).astype(int)
+            timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+            b, g, r = average_color
+            print(f"Sample_ID: {i}, Timestamp: {timestamp}, ROI Color (RGB): {average_color}")
+
+            if frame_count > 0:  # Skip first frame (often has artifacts)
+                if r + g + b > self.lim:
+                    print("Blank detected")
+                    blank_detected = True
+                else:
+                    image_path = os.path.join(img_dir, f"img_{i}_{timestamp}.jpg")
+                    cv2.imwrite(image_path, frame)
+                    with open(file_path, mode='a', newline='') as file:
+                        writer = csv.writer(file)
+                        writer.writerow([i, timestamp, r, g, b])
+            
+            frame_count += 1
+            time.sleep(0.2)
+        
+        return blank_detected
 
     def stop(self):
         self.running = False

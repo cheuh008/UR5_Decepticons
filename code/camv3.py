@@ -75,7 +75,7 @@ class CameraController:
                         writer.writerow([i, timestamp, r, g, b])
             
             frame_count += 1
-            time.sleep(0.2)
+            time.sleep(0.1)
         
         return blank_detected
 
