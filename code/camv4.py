@@ -1,12 +1,12 @@
-import cv2
 import os
-import numpy as np
-import time
+import cv2
 import csv
+import time
 import threading
-from collections import deque
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 import matplotlib.pyplot as plt
+from collections import deque
+import numpy as np
 
 class CameraController:
     def __init__(self):
