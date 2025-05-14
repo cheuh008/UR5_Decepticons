@@ -27,15 +27,16 @@ class CameraController:
         
         # Initialize plot figure
         self.fig, self.ax = plt.subplots(figsize=(8, 4))
-        self.ax.set_xlabel('Time (s)')
-        self.ax.set_ylabel('RGB Intensity')
-        self.ax.set_title('Live RGB Intensity Plot')
-        self.ax.grid(True)
-        self.line_r, = self.ax.plot([], [], 'r-', label='Red')
-        self.line_g, = self.ax.plot([], [], 'g-', label='Green')
-        self.line_b, = self.ax.plot([], [], 'b-', label='Blue')
-        self.ax.legend()
+        self.ax.set_xlabel('Time (s)', fontsize=24)
+        self.ax.set_ylabel('RGB Intensity', fontsize=24)
+        self.ax.set_title('Live RGB Intensity Plot', fontsize=32)
+        self.ax.grid(False)
+        self.line_r, = self.ax.plot([], [], color='#E69F00', marker='o', markersize=6, linestyle='-', label='Red')
+        self.line_g, = self.ax.plot([], [], color='#009E73', marker='^', markersize=6, linestyle='-', label='Green')
+        self.line_b, = self.ax.plot([], [], color='#56B4E9', marker='s', markersize=6, linestyle='-', label='Blue')
+        self.ax.legend(fontsize=18, loc='center left', bbox_to_anchor=(1.02, 0.5), borderaxespad=0.)
         self.canvas = FigureCanvasAgg(self.fig)
+        self.fig.tight_layout(rect=[0, 0, 0.85, 1])
 
     def start_capture(self):
         self.running = True
